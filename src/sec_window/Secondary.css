@@ -1,0 +1,47 @@
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+}
+
+.card {
+  width: 250px;
+  height: 250px;
+  border: solid white 1px;
+  background-color: #515151;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 4px;
+}
+
+h3 {
+  margin: 8px 0 8px 0;
+}
+
+button {
+  border-radius: 8px;
+  border: none;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: rgb(44, 196, 196);
+  color: white;
+  transition: all ease-in-out 0.25s;
+}
+button:hover {
+  background-color: rgb(66, 222, 222);
+  transition: all ease-in-out 0.25s;
+  transform: scale(1.05);
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25);
+}
+.delete-button {
+  background-color: rgb(233, 76, 37);
+}
+.delete-button:hover {
+  background-color: rgb(238, 96, 61);
+}
