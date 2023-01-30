@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { parse, ParseResult } from "papaparse";
-import { UIState, UIStateDefault } from "@schemas";
+import { UIState, UIStateDefault } from "../schemas";
 
 import { ipcRenderer } from "electron";
 const tesurl = "./data/test.csv";

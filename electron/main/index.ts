@@ -1,9 +1,6 @@
 import { app, BrowserWindow, shell, ipcMain } from "electron";
-import { release } from "node:os";
 import { join } from "node:path";
-
-import { UIState, UIStateDefault } from "@schemas";
-import { ProjectableStore } from "electron/store/Store";
+import { ProjectableStore } from "../store/Store";
 
 process.env.DIST_ELECTRON = join(__dirname, "../");
 process.env.DIST = join(process.env.DIST_ELECTRON, "../dist");
@@ -11,10 +8,7 @@ process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
   ? join(process.env.DIST_ELECTRON, "../public")
   : process.env.DIST;
 
-const uiStore = new ProjectableStore<UIState>("ui", UIStateDefault);
-
-// Disable GPU Acceleration for Windows 7
-if (release().startsWith("6.1")) app.disableHardwareAcceleration();
+const uiStore = new ProjectableStore<any>("ui", {});
 
 // Set application name for Windows 10+ notifications
 if (process.platform === "win32") app.setAppUserModelId(app.getName());

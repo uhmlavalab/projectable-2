@@ -11,7 +11,9 @@ function SecondaryWindow() {
       </div>
       <div className="card">
         <h3>Electron Store</h3>
-        Count: {uiState.countValue}
+        <h4>Count Value:</h4> {uiState.countValue}
+        <h4>Slider Value:</h4>
+        {uiState.sliderValue}
       </div>
     </div>
   );

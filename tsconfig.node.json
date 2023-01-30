@@ -5,12 +5,7 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
-    "skipLibCheck": true,
-    "paths": {
-      "@schemas": ["shared/schemas"]
-    },
-    "outDir": "dist"
+    "skipLibCheck": true
   },
-  "include": ["vite.config.ts", "package.json", "electron", "shared"]
+  "include": ["vite.config.ts", "package.json", "electron"]
 }

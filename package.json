@@ -12,8 +12,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run compile && vite build && electron-builder",
-    "compile": "tsc -b",
+    "build": "vite build && electron-builder",
     "preview": "vite preview",
     "e2e": "npx playwright test"
   },
@@ -39,7 +38,11 @@
   "dependencies": {
     "csv-parse": "^5.3.3",
     "electron-store": "^8.1.0",
+    "module-alias": "^2.2.2",
     "papaparse": "^5.3.2",
     "tsconfig-paths": "^4.1.2"
+  },
+  "_moduleAliases": {
+    "@schemas": "dist/shared/schemas"
   }
 }

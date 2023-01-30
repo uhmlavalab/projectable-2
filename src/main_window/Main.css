@@ -32,6 +32,7 @@ button {
   background-color: rgb(44, 196, 196);
   color: white;
   transition: all ease-in-out 0.25s;
+  margin: 0 4px 0 4px;
 }
 button:hover {
   background-color: rgb(66, 222, 222);
