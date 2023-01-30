@@ -2,7 +2,8 @@ import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
 
-import { DB } from "../database/db";
+import { UIState, UIStateDefault } from "@schemas";
+import { ProjectableStore } from "electron/store/Store";
 
 process.env.DIST_ELECTRON = join(__dirname, "../");
 process.env.DIST = join(process.env.DIST_ELECTRON, "../dist");
@@ -10,11 +11,7 @@ process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
   ? join(process.env.DIST_ELECTRON, "../public")
   : process.env.DIST;
 
-async function InitDb() {
-  await DB.init();
-}
-
-InitDb();
+const uiStore = new ProjectableStore<UIState>("ui", UIStateDefault);
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
@@ -77,28 +74,25 @@ async function createWindows() {
 
   // Test actively push message to the Electron-Renderer
   mainWin.webContents.on("did-finish-load", () => {
-    sendNewPosts();
+    sendNewUIState();
     mainWin.webContents.send("window-name", { name: "main" });
   });
 
   // Test actively push message to the Electron-Renderer
   secondaryWin.webContents.on("did-finish-load", () => {
-    sendNewPosts();
+    sendNewUIState();
     secondaryWin.webContents.send("window-name", { name: "secondary" });
   });
 
-  function sendNewPosts() {
-    mainWin.webContents.send("posts-list", { posts: DB.getPosts() });
-    secondaryWin.webContents.send("posts-list", { posts: DB.getPosts() });
+  function sendNewUIState() {
+    const ui = uiStore.get();
+    mainWin.webContents.send("ui-event-update", { ui });
+    secondaryWin.webContents.send("ui-event-update", { ui });
   }
 
-  ipcMain.on("posts-add", (_, arg) => {
-    DB.addPost(arg.post);
-    sendNewPosts();
-  });
-  ipcMain.on("posts-remove", (_, arg) => {
-    DB.removePost(arg.id);
-    sendNewPosts();
+  ipcMain.on("ui-update", (_, arg) => {
+    uiStore.update(arg.update);
+    sendNewUIState();
   });
 }
 

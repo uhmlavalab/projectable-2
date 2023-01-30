@@ -12,5 +12,5 @@
     },
     "outDir": "dist"
   },
-  "include": ["vite.config.ts", "package.json", "electron", "shared"],
+  "include": ["vite.config.ts", "package.json", "electron", "shared"]
 }

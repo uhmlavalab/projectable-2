@@ -1,21 +1,17 @@
-import { useState } from "react";
 import "./Main.css";
-import { Post } from "shared/schemas";
 import { useStore } from "../store/useStore";
 
 function MainWindow() {
-  const [count, setCount] = useState(0);
-  const { users, posts, addPost, removePost } = useStore();
+  const { users, uiState, updateUI } = useStore();
 
-  const addNewPost = () => {
-    const id = Math.floor(Math.random() * 1000).toString();
-    const newPost = {
-      text: "Hello ",
-      timestamp: Date.now(),
-      id: id,
-    } as Post;
-    addPost(newPost);
+  const incCount = () => {
+    updateUI({ countValue: uiState.countValue + 1 });
   };
+
+  const decCount = () => {
+    updateUI({ countValue: uiState.countValue - 1 });
+  };
+
   return (
     <div id="app">
       <div>
@@ -32,29 +28,12 @@ function MainWindow() {
           );
         })}
       </div>
-      <div className="card">
-        <h3>Electron Store</h3>
-        {posts.map((p) => {
-          return (
-            <div key={p.id}>
-              {p.text} : {p.id}
-              <button
-                onClick={() => removePost(p.id)}
-                className="delete-button"
-              >
-                delete
-              </button>
-            </div>
-          );
-        })}
-        <button onClick={addNewPost}> Add</button>
-      </div>
 
       <div className="card">
-        <h3>Local State</h3>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <h3>Electron Store</h3>
+        Count: {uiState.countValue}
+        <button onClick={incCount}> Increase</button>
+        <button onClick={decCount}> Decrease</button>
       </div>
     </div>
   );

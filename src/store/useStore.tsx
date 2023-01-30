@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { parse, ParseResult } from "papaparse";
-import { Post, User } from "@schemas";
+import { UIState, UIStateDefault } from "@schemas";
 
 import { ipcRenderer } from "electron";
 const tesurl = "./data/test.csv";
@@ -9,11 +9,10 @@ const tesurl = "./data/test.csv";
 type WinName = "main" | "secondary" | "pending";
 
 const StoreContext = createContext({
-  users: [] as User[],
-  posts: [] as Post[],
+  uiState: UIStateDefault,
+  users: [],
   winName: "pending" as WinName,
-  addPost: (newpost: Post) => {},
-  removePost: (id: string) => {},
+  updateUI: (newpost: Partial<UIState>) => {},
 });
 
 export function useStore() {
@@ -23,7 +22,7 @@ export function useStore() {
 export function StoreProvider(
   props: React.PropsWithChildren<Record<string, unknown>>
 ) {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [uiState, setUIState] = useState<UIState>(UIStateDefault);
 
   const [users, setUsers] = useState([]);
 
@@ -42,8 +41,8 @@ export function StoreProvider(
   }, []);
 
   useEffect(() => {
-    ipcRenderer.on("posts-list", (evt, message) => {
-      setPosts(message.posts);
+    ipcRenderer.on("ui-event-update", (evt, message) => {
+      setUIState(message.ui);
     });
     ipcRenderer.on("window-name", (evt, message) => {
       setWinName(message.name);
@@ -51,25 +50,15 @@ export function StoreProvider(
   }, []);
 
   /**
-   * Create a new post
-   * @param post Post to create
+   * Update UI State
+   * @param update Updates to the UI
    */
-  const addPost = (newpost: Post) => {
-    ipcRenderer.send("posts-add", { post: newpost });
-  };
-
-  /**
-   * Remove a post
-   * @param id Id of post to remove
-   */
-  const removePost = (id: string) => {
-    ipcRenderer.send("posts-remove", { id });
+  const updateUI = (update: Partial<UIState>) => {
+    ipcRenderer.send("ui-update", { update });
   };
 
   return (
-    <StoreContext.Provider
-      value={{ users, posts, addPost, removePost, winName }}
-    >
+    <StoreContext.Provider value={{ uiState, users, updateUI, winName }}>
       {props.children}
     </StoreContext.Provider>
   );

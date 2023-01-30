@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "csv-parse": "^5.3.3",
-    "lowdb": "github:dankreiger/lowdb#chore/esm-cjs-hybrid-WITH-LIB",
+    "electron-store": "^8.1.0",
     "papaparse": "^5.3.2",
     "tsconfig-paths": "^4.1.2"
   }
